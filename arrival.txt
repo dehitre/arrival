@@ -1,0 +1,71 @@
+# arrival #
+
+Функциональные
+
+- Создать медведя
+   - Тип медведя bear_type
+      - Сделать POST /bear {"bear_type":"BLACK","bear_name":"","bear_age":1}: в ответе приходит id медведя; сделать GET /bear/{id}:  под этим id записан медведь "bear_type":"BLACK","":"TEST","bear_age":1.0 //так же для POLAR, BROWN, и GUMMY
+      - Сделать POST /bear {"bear_type":"GUMMY","bear_name":"","bear_age":1}: в ответе приходит id медведя; сделать GET  /bear/{id}: null
+      - Сделать POST /bear {"bear_type":"vvvv","bear_name":"","bear_age":1}: в ответе приходит id медведя (в ответе приходит  500)
+      - Сделать POST /bear {"bear_type":"","bear_name":"","bear_age":1}: в ответе приходит id медведя (в ответе приходит  500)
+      - Сделать POST /bear {"bear_name":"","bear_age":1}: в ответе приходит Error. Pls fill all parameters
+   - Имя медведя bear_name
+      - Проверка на пробелы
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"","bear_age":1}: в ответе приходит id медведя; сделать GET  /bear/{id}: под этим id записан медведь "bear_type":"BLACK","bear_name":"","bear_age":1.0
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"   ","bear_age":1}: в ответе приходит id медведя; сделать GET  /bear/{id}: под этим id записан медведь "bear_type":"BLACK","bear_name":"   ","bear_age":1.0
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":" test ","bear_age":1}: в ответе приходит id медведя; сделать GET  /bear/{id}:  под этим id записан медведь "bear_type":"BLACK","bear_name":" TEST ","bear_age":1.0
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test test","bear_age":1}: в ответе приходит id медведя; сделать GET /bear/{id}: под этим id записан медведь "bear_type":"BLACK","bear_name":"TEST TEST","bear_age":1.0
+      - Проверка на спецсимволы
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"!@#$%^&*()<>/?\\|`~±§","bear_age":1}: в ответе приходит id медведя; сделать GET  /bear/{id}: под этим id записан медведь "bear_type":"BLACK","bear_name":"!@#$%^&*()<>/?\\|`~±§","bear_age","bear_age":1.0
+      - Проверка на длину строки
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":<сто символов>,"bear_age":1}: в ответе приходит id медведя; сделать GET  /bear/{id}:  под этим id записан медведь "bear_type":"BLACK","bear_name":<сто символов>,"bear_age":1.0
+      - Проверка, что символы преобразуются к верхнему регистру
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":1}: в ответе приходит id медведя; сделать GET  /bear/{id}: под этим id записан медведь "bear_type":"BLACK","bear_name":"test","bear_age":1.0
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"Test","bear_age":1}: в ответе приходит id медведя; сделать GET  /bear/{id}:  под этим id записан медведь "bear_type":"BLACK","bear_name":"TEST","bear_age":1.0
+   - Возраст медведя bear_age
+      - Проверить, что возраст медведя от 0 до 100 включительно
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":0}: в ответе приходит id медведя; сделать GET  /bear/{id}:  под этим id записан медведь "bear_type":"BLACK","bear_name":"test","bear_age":0.0
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":1}: в ответе приходит id медведя; сделать GET  /bear/{id}:  под этим id записан медведь "bear_type":"BLACK","bear_name":"test","bear_age":1
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":-1}: в ответе приходит id медведя; сделать GET  /bear/{id}:  под этим id записан медведь "bear_type":"BLACK","bear_name":"test","bear_age":0.0
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":100}: в ответе приходит id медведя; сделать GET  /bear/{id}: под этим id записан медведь "bear_type":"BLACK","bear_name":"test","bear_age":100.0
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":101}: в ответе приходит id медведя; сделать GET  /bear/{id}:  под этим id записан медведь "bear_type":"BLACK","bear_name":"test","bear_age":0.0
+      - Проверит формат записи возраста медведя
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":0.000001}: в ответе приходит id медведя; сделать GET  /bear/{id}:  под этим id записан медведь "bear_type":"BLACK","bear_name":"test","bear_age":0.000001
+         - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":0.0000001}: в ответе приходит id медведя; сделать GET  /bear/{id}: под этим id записан медведь "bear_type":"BLACK","bear_name":"test","bear_age":1e-7
+   - Проверка параметров
+      - Удалить один из обязательных параметров bear_type/bear_name/bear_age: Error. Pls fill all parameters
+      - Добавить лишний параметр {"bear_type":"BROWN","bear_name":"àè","bear_age":12, "yerte4":"efre"}: в ответе приходит id медведя; сделать GET медведя по id: под этим id записан медведь "bear_type":"BROWN","bear_name":"test","bear_age":0.0 // проверка на совместимость
+- Изменить медведя
+   - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":12} и получить id, сделать PUT /bear/{id} {"bear_type":"GUMMY","bear_name":"vasya","bear_age":12}: в ответе ОК;сделать GET /bear/{id} получить {"bear_type":"BLACK","bear_name":"vasya","bear_age":12}
+   - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":12} и получить id, сделать PUT /bear/{id} {"bear_name":"vasya"}: в ответе ОК;сделать GET /bear/{id} получить {"bear_type":"BLACK","bear_name":"vasya","bear_age":12}
+   - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":12} и получить id, сделать PUT /bear/{id} {"bear_id": <несуществующий id>}: в ответе ОК;сделать GET /bear/{id} получить {"bear_type":"BLACK","bear_name":"test","bear_age":12}; сделать GET /bear/{<несуществующий id>} получить EMPTY
+   - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":12} и получить id, сделать PUT /bear/{id} {"bear_name":""}: в ответе ОК;сделать GET /bear/{id} получить {"bear_type":"BLACK","bear_name":"","bear_age":12}
+- Удалить медведя
+   - Сделать DELETE /bear/{id} для существующего id: приходит ОК; сделать GET /bear{id}: EMPTY;сделать GET /bear: медведя нет в списке
+   - Сделать DELETE /bear/{id} для несуществующего id: приходит ОК
+   - Сделать DELETE /bear/0: приходит ОК
+   - Сделать DELETE /bear/-1: приходит ОК
+   - Сделать DELETE /bear/aaa : приходит ОК
+   - Сделать DELETE /bear/{id} для последнего id в списке: приходит ОК; Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":1}: в ответе приходит id медведя на один больше
+- Удалить всех медведей
+   - Сделать DELETE /bear: приходит ОК; сделать GET /bear: приходит пустой список
+   - Проверить нумерацию id после удаления всех медведей: нумерация продолжается
+- Получить информацию по одному медведю
+   - //не считая проверок Создать медведя
+   - Запросить GET http://0.0.0.0:8091/bear/{id}, который больше чем последний существующий: возвращается EMPTY
+   - Запросить GET http://0.0.0.0:8091/bear/fjerhfr: возвращается EMPTY
+   - Запросить GET http://0.0.0.0:8091/bear/-1: возвращается EMPTY
+- Получить информацию по всем медведям
+   - Сделать POST /bear {"bear_type":"BLACK","bear_name":"test","bear_age":1}: в ответе приходит id медведя; сделать GET /bear: под этим id записан медведь "bear_type":"BLACK","":"TEST","bear_age":1.0
+   - Сделать POST /bear 11 раз {"bear_type":"BLACK","bear_name":"test","bear_age":1}: сделать GET /bear, приходит несортированный список медведей, для каждого есть id, bear_type,bear_name, bear_age
+- Проверить info
+   - Сделать GET /info: в ответе описание сервиса
+
+Нефункциональные
+
+- Докер
+   - Создать несколько элементов, рестартовать контейнер: запросить GET /bear: пустой список; создать новый элемент: нумерация id. начинается сначала
+- Нагрузка
+   - Нагрузочное тестирование: насколько быстро должна отвечать система
+   - Стрессовое тестирование: что произойдет при возрастающей нагрузке
+   - Тестирование объемов: как снизится производительность на больших объемах данных
