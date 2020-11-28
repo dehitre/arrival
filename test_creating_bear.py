@@ -4,7 +4,7 @@ from basicsteps import BasicSteps as bs
 from assertionbear import AssertionBear as ab
 
 
-@allure.title("Create bear with differnt types")
+@allure.title("Create bear with different types")
 @pytest.mark.parametrize('bear_type', ["BLACK", "BROWN", "POLAR", "GUMMY"])
 def test_creating_bear_with_different_types(bear_type):
     bear = bs.create_bear_with_specified_type(bear_type)
