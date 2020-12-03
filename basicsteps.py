@@ -42,24 +42,27 @@ class BasicSteps:
         return response
 
     @staticmethod
-    def create_bear_with_specified_type(bear_type):
+    def create_bear_with_specified_parameter(**kwargs):
         path = '/bear'
-        data = Bear(bear_type=bear_type)
+        param_name = next(iter(kwargs))
+        if param_name == 'bear_name':
+            data = Bear(bear_name=kwargs[param_name])
+        elif param_name == 'bear_type':
+            data = Bear(bear_type=kwargs[param_name])
+        elif param_name == 'bear_age':
+            data = Bear(bear_age=kwargs[param_name])
+        else:
+            raise Exception("Invalid parameter")
+
         response = requests.post(url + path, data=json.dumps(data.__dict__), headers=headers)
         return response
 
-    @staticmethod
-    def create_bear_with_specified_age(bear_age):
-        path = '/bear'
-        data = Bear(bear_age=bear_age)
-        response = requests.post(url + path, data=json.dumps(data.__dict__), headers=headers)
-        return response
+    """Updating bear"""
 
     @staticmethod
-    def create_bear_with_name_with_spaces(bear_name):
-        path = '/bear'
-        data = Bear(bear_name=bear_name)
-        response = requests.post(url + path, data=json.dumps(data.__dict__), headers=headers)
+    def update_bear_with_specified_parameter(bear_id, **kwargs):
+        path = f'/bear/{bear_id}'
+        response = requests.put(url + path, data=json.dumps(kwargs), headers=headers)
         return response
 
     """Deleting bear"""

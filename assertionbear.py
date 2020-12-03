@@ -34,7 +34,14 @@ class AssertionBear:
         return False
 
     @staticmethod
-    def check_ok_returns_after_deletion(response):
+    def check_user_updated_with_specified_name(response, bear_name):
+        if response.status_code == 200 and response.content.decode('ascii') != 'null' and response.json()["bear_name"] \
+                == bear_name:
+            return True
+        return False
+
+    @staticmethod
+    def check_that_operation_returns_ok(response):
         if response.status_code == 200 and response.content.decode('ascii') == 'OK':
             return True
         return False
