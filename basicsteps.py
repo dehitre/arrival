@@ -1,7 +1,10 @@
+import pytest
+
 from bear import Bear
 import requests
 import json
 import yaml
+import allure
 
 headers = {'Content-Type': 'application/json'}
 
@@ -26,7 +29,9 @@ url = api.url
 class BasicSteps:
     """Getting bear"""
 
+
     @staticmethod
+    @allure.step("Get bear by id")
     def get_bear_by_id(bear_id):
         path = f'/bear/{bear_id}'
         response = requests.get(url + path, headers=headers)
@@ -35,6 +40,7 @@ class BasicSteps:
     """Creating bear"""
 
     @staticmethod
+    @allure.step("Create bear with default parameters")
     def create_bear():
         path = '/bear'
         data = Bear()
@@ -42,29 +48,35 @@ class BasicSteps:
         return response
 
     @staticmethod
-    def create_bear_with_specified_type(bear_type):
+    @allure.step("Create bear with specified parameters")
+    def create_bear_with_specified_parameter(**kwargs):
         path = '/bear'
-        data = Bear(bear_type=bear_type)
+        param_name = next(iter(kwargs))
+        if param_name == 'bear_name':
+            data = Bear(bear_name=kwargs[param_name])
+        elif param_name == 'bear_type':
+            data = Bear(bear_type=kwargs[param_name])
+        elif param_name == 'bear_age':
+            data = Bear(bear_age=kwargs[param_name])
+        else:
+            raise Exception("Invalid parameter")
+
         response = requests.post(url + path, data=json.dumps(data.__dict__), headers=headers)
         return response
 
-    @staticmethod
-    def create_bear_with_specified_age(bear_age):
-        path = '/bear'
-        data = Bear(bear_age=bear_age)
-        response = requests.post(url + path, data=json.dumps(data.__dict__), headers=headers)
-        return response
+    """Updating bear"""
 
     @staticmethod
-    def create_bear_with_name_with_spaces(bear_name):
-        path = '/bear'
-        data = Bear(bear_name=bear_name)
-        response = requests.post(url + path, data=json.dumps(data.__dict__), headers=headers)
+    @allure.step("Update bear by id  with specified parameters")
+    def update_bear_with_specified_parameter(bear_id, **kwargs):
+        path = f'/bear/{bear_id}'
+        response = requests.put(url + path, data=json.dumps(kwargs), headers=headers)
         return response
 
     """Deleting bear"""
 
     @staticmethod
+    @allure.step("Delete bear by id")
     def delete_bear_by_id(bear_id):
         path = f'/bear/{bear_id}'
         response = requests.delete(url + path, headers=headers)
